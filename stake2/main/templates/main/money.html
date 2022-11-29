@@ -1,0 +1,1446 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stake.jp</title>
+</head>
+
+<style>
+    * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+body {
+    overflow: hidden;
+}
+
+/*  */
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #0E1224B3;
+    z-index: 3;
+}
+
+/*  */
+
+
+.create {
+    color: #b1bad3;
+    background: #1a2c38;
+    padding: 20px 24px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    border-radius: .5rem;
+    min-width: 200px;
+    max-width: 500px;
+    overflow-y: auto;
+    /* max-height: 753px; */
+    max-height: 77vh;
+}
+
+.create::-webkit-scrollbar {
+    width: 7px;
+    background: #1a2c38;
+    border-radius: 10px;
+
+  }
+
+  .create::-webkit-scrollbar-thumb {
+    background: #2f4553;
+    max-height: 20px;
+    border-radius: 25px;
+  }
+
+.create__title {
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+.create__block {
+
+}
+.create__block label {
+    font-size: 14px;
+    font-weight: 600;
+}
+.create__block input, select {
+    width: 100%;
+    height: 40px;
+    background: #0f2123;
+    padding: .5em;
+    color: #fff;
+    font-weight: 600;
+    outline: none;
+    border: 2px solid #2f4553;
+    border-radius: .25rem;
+    margin-bottom: 16px;
+} 
+
+.create__block select {
+}
+
+.create__block option {
+    display: block;
+    white-space: nowrap;
+    min-height: 1.2em;
+    padding: 0 2px 1px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    
+}
+
+.create__block_m {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: .5rem;
+    
+}
+.create__checkboxes label {
+    font-size: 14px;
+    color: #b1bad3;
+}
+
+.create__checkboxe {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+#code-it-self {
+    display: none;
+}
+
+.active {
+    display: block !important;
+}
+  
+/* Hide the default checkbox */
+input[type=checkbox] {
+    visibility: hidden;
+}
+  
+/* Creating a custom checkbox
+based on demand */
+.mark {
+    border: 2px solid #2f4553;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 21px;
+    width: 21px;
+    border-radius: 3px;
+}
+  
+/* Specify the background color to be
+shown when hovering over checkbox */
+/* .create__checkboxe:hover input ~ .mark {
+    background-color: yellow;
+} */
+  
+/* Specify the background color to be
+shown when checkbox is active */
+/* .create__checkboxe input:active ~ .mark {
+    background-color: red;
+} */
+  
+/* Specify the background color to be
+shown when checkbox is checked */
+.create__checkboxe input:checked ~ .mark {
+    background-color: #2f4553;
+}
+  
+/* Checkmark to be shown in checkbox */
+/* It is not be shown when not checked */
+.mark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+  
+/* Display checkmark when checked */
+.create__checkboxe input:checked ~ .mark:after {
+    display: block;
+}
+  
+/* Styling the checkmark using webkit */
+/* Rotated the rectangle by 45 degree and 
+showing only two border to make it look
+like a tickmark */
+.create__checkboxe .mark:after {
+    left: 5px;
+    bottom: 3px;
+    width: 3px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 4px 4px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.create__interaction {
+    width: 100% !important;
+}
+
+.create__btn {
+    min-width: 100%;
+    border-radius: .25rem !important;
+    padding: 1.25em 1em !important;
+    border: none;
+    outline: none;
+    background: #00e701;
+    cursor: pointer;
+    margin-top: 1rem;
+    position: relative;
+    min-height: 42px;
+}
+
+.create__btn a {
+    text-decoration: none;
+    color: #013e01 !important;
+    font-weight: 600;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 27%;
+    left: 0;
+}
+
+.create__btn:hover {
+    background: #00be00;
+}
+.create__buttons {
+}
+
+.create__btn_s {
+    /* padding: 1em 3em !important; */
+}
+
+.create__footer {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+}
+.create__text {
+}
+
+
+/*  */
+
+.wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    background: #1a2c38;
+    box-shadow: #0003 0 4px 6px -1px,#0000001f 0 2px 4px -1px;
+    height: 80px;
+    position: relative;
+    z-index: 2;
+    /* padding: 0 10px; */
+
+}
+
+.header__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+.header__logo {
+}
+.header__menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: bold;
+    padding: 0px 20px;
+
+}
+.header__sign-in {
+    padding: 10.5px 14px;
+    font-size: 14px;
+}
+
+.header__register {
+    padding: 10.5px 14px;
+    outline: none;
+    border: none;
+    background: #2380eb;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    
+}
+
+/*  */
+
+.main {
+    /* #0f212e #071d2a #071824 */
+    background: #071d2a;
+    color: #fff;
+}
+.main__hero {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    justify-content: space-between;
+    z-index: 1;
+    padding: 0 20px;
+    /* padding-right: 30px; */
+}
+
+.main__interaction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.main__register {
+    margin-top: 1rem;
+    color: #fff;
+    background: #1475E1;
+    padding: 10.5px 14px;
+    border-radius: 25px;
+    width: 305px;
+    height: 45px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+
+}
+.main__or {
+    margin: .75rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.main__or-line {
+    border-bottom: 1px solid #2f4553;
+    width: 83px;
+}
+.main__or-text {
+    color: #b1bad3;
+    padding: 0 .5rem;
+}
+.main__buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: .5rem;
+
+}
+
+.main__buttons img {
+
+} 
+
+.main__btn {
+    background: #2f4553;
+    width: 70px;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 360px) {
+    .main__btn {
+        width: 50px;
+        height: 40px; 
+    }
+    .main__register {
+        width: 230px;
+    }
+
+    .create__text {
+    }
+}
+
+.main__image {
+    height: 100%;
+
+}
+
+.main__image img{
+    width: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 888px) {
+    .main__hero {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 415px) {
+    .main__hero h1 {
+        margin-top: 20px;
+    }
+
+    .main__image {
+        margin-top: 20px;
+    }
+}
+
+/*  */
+
+.gambling {
+    background: #1a2c38;
+    padding-top: 25px;
+}
+.gambling__wrapper {
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 2rem;
+}
+.gambling__block {
+    color: #fff;
+}
+.gambling__header {
+    display: flex;
+    align-items: center;
+}
+.gambling__header span {
+    font-weight: bold;
+    margin-left: .3rem;
+}
+.gambling__img {
+    margin: 1rem 0;
+    height: 238px;
+}
+.gambling__img img {
+    border-radius: .25rem;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.gambling__title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.gambling__desc {
+    color: #b1bad3;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.gambling__btn {
+    margin-top: 1rem;
+    width: 100%;
+    color: #fff;
+    font-weight: 600;
+    background: #1475E1;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 10.5px 14px;
+    height: 45px;
+}
+
+@media (max-width: 888px) {
+    .gambling__wrapper {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, 1fr);
+        grid-column-gap: 0rem;
+        grid-row-gap: 2rem;
+    }
+}
+
+/*  */
+
+.drake {
+    background: #1a2c38;
+    padding: 30px 0px;
+    min-height: 300vh;
+}
+.wrapper {
+}
+.drake__wrapper {
+    margin: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    background: #0f212e;
+    padding: 0 0 0 1.25rem;
+
+}
+.drake__btn {
+    background: #2f4553;
+    color: #fff;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    max-width: 100px;
+    font-weight: bold;
+}
+.drake__collab {
+}
+.drake__image {
+}
+
+.drake__image img {
+    height: 80px;
+    width: auto;
+}
+
+@media (max-width: 888px) {
+    .drake__image {
+        display: none;
+    }
+
+    .drake__wrapper {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-areas: 'collab btn';
+        padding: 0 1.25rem;
+
+    }
+
+    .drake__btn {
+        grid-area: btn;
+        justify-self: end;
+    }
+    .drake__collab {
+        grid-area: collab;
+    }
+}
+
+@media (max-width: 416px) {
+    .drake__wrapper {
+        min-height: 70px;
+    }
+
+    .drake__collab img {
+        max-width: 100%;
+        width: 12rem;
+    }
+}
+
+/*  */
+/* index2.html */
+/*  */
+
+.header__balance {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+} 
+.header__money {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #04172D;
+    padding: 10.5px 14px;
+    cursor: pointer;
+    border-radius: .25em;
+} 
+.header__money:hover {
+    background: #071824;
+}
+.header__btc {
+    margin-left: 5px;
+    margin-right: 10px;
+}
+.header__arrow {
+    transform: rotate(45deg);
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    height: 8px;
+    width: 8px;
+    position: relative;
+    bottom: 2px;
+}
+
+.header__wallet {
+    padding: 12px 14px;
+    background: #1474E1;
+    border-radius: 0 .25em .25em 0;
+    cursor: pointer;
+}
+
+.header__wallet:hover {
+    background: #105EB4;
+}
+
+.header__menu-block {
+    font-size: 14px;
+    padding: 0px 8px;
+}
+
+.header__ic span {
+    position: relative;
+    bottom: 2.5px;
+}
+
+#s, #wallet {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    #search, .header__ic span, #chat {
+        display: none;
+    }
+    .header__menu-block {
+        padding: 0px;
+    }
+    .header__wallet span {
+        display: none;
+    }
+    #wallet {
+        display: block;
+    }
+}
+@media (max-width: 400px) {
+    #s {
+        display: block;
+        padding-right: 15px;
+    }
+    #stake-logo {
+        display: none;
+    }
+}
+
+/*  */
+
+.main__welcome {
+    font-weight: 600;
+    width: 100%;
+    padding-right: 70px;
+}
+.main__welcome h1 {
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+.main__progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.main__bar {
+    background: #2f4553;
+    width: 100%;
+    height: 1em;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.main__stars {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    margin-top: 10px;
+    color: #b1bad3;
+}
+.main__star {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main__star img {
+    margin-right: 0.5ch;
+}
+
+@media (max-width: 888px) {
+    .main__image {
+        display: none;
+    }
+
+    .main__welcome {
+        position: relative;
+        top: 35px;
+        padding-right: 0;
+    }
+}
+
+/*  */
+
+.wallet__wrapper {
+}
+
+.wallet {
+    color: #fff;
+    background: #1a2c38;
+    padding: 20px 24px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    border-radius: .5rem;
+    min-width: 200px;
+    max-width: 500px;
+    overflow-y: auto;
+    /* max-height: 753px; */
+    max-height: 77vh;
+    width: 100%;
+    overflow-x: hidden;
+    z-index: 3;
+}
+
+.wallet::-webkit-scrollbar {
+    width: 7px;
+    background: #1a2c38;
+    border-radius: 10px;
+
+  }
+
+  .wallet::-webkit-scrollbar-thumb {
+    background: #2f4553;
+    max-height: 20px;
+    border-radius: 25px;
+  }
+
+.wallet__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-weight: 600;
+    
+}
+.wallet__itself {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.wallet__itself span {
+    margin-top: 7px;
+    margin-left: 5px;
+}
+
+.cross {
+    position: relative;
+    color: #b1bad3;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.cross:hover {
+    color: #fff;
+}
+
+.wallet__nav_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0 auto;
+    max-width: 347px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.wallet__nav {
+    display: flex;
+    align-items: center;
+    /* justify-content: flex-start; */
+    background: #0f212e;
+    padding: 5px;
+    border-radius: 3rem;
+    /* overflow-x: auto;
+    overflow-y: hidden; */
+    min-width: 100%;
+    min-width: 347px;
+}
+
+.wallet__nav_wrapper::-webkit-scrollbar {
+    height: 6px;
+    background: #1a2c38;
+    border-radius: 10px;
+
+}
+
+.wallet__nav_wrapper::-webkit-scrollbar-thumb {
+    background: #2f4553;
+    max-height: 20px;
+    border-radius: 25px;
+}
+
+.wallet__tab {
+    padding: .75em 1em;
+    border-radius: 100px;
+    font-size: 0.875rem;
+    line-height: 150%;
+    margin-left: 5px;
+    flex-shrink: 0;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.wallet__tab:first-child {
+    margin-left: 0px;
+}
+
+.wallet__tab_a {
+    background: #2f4553;
+    transition: background-color .2s, color .2s;
+}
+
+#buy_crypto:hover, #deposit:hover {
+    background: #2f4553;
+    transition: background-color .2s, color .2s;
+}
+
+.wallet__tab_invalid {
+    color: #2f4553;
+    cursor: not-allowed;
+}
+.wallet__payment {
+    display: flex;
+    flex-direction: column;
+}
+.wallet__crypto {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f212e;
+    border-radius: .25rem;
+    padding: .75em 1em;
+    max-width: 120px;
+    align-self: center;
+    cursor: pointer;
+}
+
+.wallet__crypto:hover {
+    background: #071824;
+}
+
+.wallet__crypto span {
+    font-weight: 600;
+}
+.wallet__crypto img {
+    margin-right: 5px;
+    margin-bottom: 1px;
+}
+.wallet__arrow {
+    border-bottom: 2px solid #b1bad3;
+    border-right: 2px solid #b1bad3;
+    width: 7px;
+    height: 7px;
+    margin-left: .5rem;
+    margin-bottom: 5px;
+    transform: rotate(45deg);
+}
+.wallet__arrow__active {
+    transform: rotate(225deg);
+    margin-bottom: 0px;
+    margin-top: 2px;
+}
+.wallet__dropdown {
+    background: #fff;
+    color: #2f4553;
+    font-weight: 600;
+    font-size: 14px;
+    min-width: 225px;
+    margin: 0 auto;
+    border-radius: .25rem;
+    position: relative;
+    padding: 5px 0;
+    display: none;
+}
+
+.wallet__dropdown__active {
+    display: block;
+}
+
+.wallet__dropdown__wrapper {
+    background: #fff;
+    min-width: 225px;
+    position: fixed;
+}
+
+.wallet__dropdown::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    transform: rotate(45deg);
+    left: 50%;
+    top: -4px;
+}
+
+.wallet__choices {
+    list-style-type: none;
+    overflow-y: auto;
+    max-height: 200px;
+    cursor: pointer;
+}
+.wallet__choices::-webkit-scrollbar {
+    width: 6px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.wallet__choices::-webkit-scrollbar-thumb {
+    background: #b1bad3;
+    border-radius: 25px;
+}
+.wallet__choice img {
+    width: 14px;
+    height: 14px;
+    position: relative;
+    top: 3px;
+}
+.wallet__choice {
+    padding: .75em 1em;
+}
+.wallet__choice:hover {
+    color: #213743;
+    background: #d5dceb;
+}
+.wallet__data {
+    color: #b1bad3;
+    font-size: 14px;
+    margin-top: 1rem;
+}
+.wallet__info {
+    font-weight: 600;
+    margin-bottom: .25rem;
+}
+.wallet__input {
+    border-radius: .25rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2) 0 1px 2px 0 rgba(0, 0, 0, .12);
+    background: #2f4553;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all .25s;
+}
+
+.wallet__input:hover {
+}
+.wallet__address {
+    width: 100%;
+    height: 100%;
+    padding: .8em;
+    background: #2f4553;
+    outline: none;
+    border: none;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+.wallet__address:hover {
+    border: 2px solid #557086;
+    border-radius: .25rem 0 0 .25rem;
+    cursor: text;
+}
+.wallet__copy {
+    padding: .8em 1em;
+    cursor: pointer;
+}
+.wallet__copy:hover {
+    background: #3d5564;
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}
+
+.wallet__copy img {
+    pointer-events: none
+}
+.wallet__qr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.wallet__qr img {
+    /* min-width: 250px;
+    max-width: 250px;
+    min-height: 230px;
+    max-height: 230px; */
+    /* max-width: 500px; */
+    /* max-height: calc(100% - 4em); */
+}
+.wallet__safe {
+    color: #b1bad3;
+    font-size: 14px;
+    text-align: center;
+}
+#wallet__safe1 {
+    margin-top: -54px;
+    /* margin-bottom: 1.25rem; */
+}
+
+@media (max-width: 485px) {
+    #wallet__safe3 {
+        text-align: left;
+    }
+}
+
+
+
+.wallet__footer {
+    background: #0f212e;
+    border-radius: .25rem;
+    padding: 1.25rem 1.5rem;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wallet__enable {
+    padding: 10.5px 14px;
+    margin: 12px 0 0;
+    background: #1475e1;
+    color: #fff;
+    outline: none;
+    border: none;
+    border-radius: .25rem;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 150%;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+}
+
+.wallet__enable:hover {
+    background: #105eb4;
+}
+
+/*  */
+
+.wallet__buttons-buy {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: .5rem;
+}
+.wallet__usd-btn {
+    border: none;
+    cursor: pointer;
+    border-radius: .25rem;
+    transition: background .2s;
+    width: 100%;
+    max-width: 500px;
+    background: #00e701;
+    padding: 1.25rem 1rem;
+}
+
+.wallet__usd-btn a {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+}
+
+.wallet__usd-btn:hover {
+    background: #1fff20;
+}
+
+.wallet__usd-btn a {
+    text-align: center;
+    color: #013e01;
+    text-decoration: none;
+    font-weight: 600;
+    line-height: 150%;
+    transition: color .2s;
+}
+</style>
+<body>
+
+    
+    <div class="overlay"></div>
+    <div class="wallet">
+        <div class="wallet__header">
+            <div class="wallet__itself">
+                <img src="{% static 'images/wallet.png' %}" alt="" width="24px" height="24px">
+                <span>Wallet</span>
+            </div>
+            <div class="cross">&#10005;</div>
+        </div>
+        <div class="wallet__nav_wrapper">
+            <div class="wallet__nav">
+                <div class="wallet__tab wallet__tab_a" id="deposit" onclick="openTab(event, 'wallet__payment')">
+                    Deposit
+                </div>
+                <div class="wallet__tab wallet__tab_invalid">
+                    Withdraw
+                </div>
+                <div class="wallet__tab" id="buy_crypto" onclick="openTab(event, 'wallet__buy')">
+                    Buy Crypto
+                </div>
+                <div class="wallet__tab wallet__tab_invalid">
+                    Tip
+                </div>
+            </div>
+        </div>
+        <div class="wallet__payment wallet__tab_b" id="wallet__payment">
+            <div class="wallet__crypto" id="wallet__crypto">
+                <img src="{% static 'images/bitcoin.png' %}" alt="" width="15px" height="15px">
+                <span>BTC</span>
+                <div class="wallet__arrow" id="wallet__arrow"></div>
+            </div>
+            <div class="wallet__dropdown" id="wallet__dropdown">
+                <div class="wallet__dropdown__wrapper">
+                    <ul class="wallet__choices">
+                        <li class="wallet__choice" data-crypto="BTC" data-address="bc1qkv5kjxxmt2zkz4umqhdgyxkz82grh8k75uufqs" data-qr="IMG_9575.PNG">
+                            <img src="{% static 'images/bitcoin.png' %}" alt="" width="16px" height="16px">
+                            <span>BTC (Bitcoin)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="ETH" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9577.PNG">
+                            <img src="{% static 'images/eth-removebg-preview.png' %}" alt="" width="16px" height="16px">
+                            <span>ETH (Ethereum)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="LTC" data-address="LL4vWcwvqB8KdwuaLZFJHRcMBai7qWSnqE" data-qr="IMG_9579.PNG">
+                            <img src="{% static 'images/ltc-removebg-preview.png' %}" alt="" width="16px" height="16px">
+                            <span>LTC (Litecoin)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="USDT" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9581.PNG">
+                            <img src="{% static 'images/usdt-removebg-preview.png' %}" alt="" width="16px" height="16px">
+                            <span>USDT (USD Tether)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="DOGE" data-address="DFZ8BFkRxsPhWe9csgfUmYq6kSWe2fGRdD" data-qr="IMG_9583.PNG">
+                            <img src="{% static 'images/dogecoin.png' %}" alt="" width="16px" height="16px">
+                            <span>DOGE (Dogecoin)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="BCH" data-address="qqu4kedss4qj9u8wt8luqesu729gf0ys0y3r6yz8n3" data-qr="IMG_9585.PNG">
+                            <img src="{% static 'images/bch-removebg-preview.png' %}" alt="" width="16px" height="16px">
+                            <span>BCH (Bitcoin Cash)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="XRP" data-address="rphU6msBxWn88axvreepMKgcWpnLknhRb8" data-qr="IMG_9587.PNG">
+                            <img src="{% static 'images/xrp.png' %}" alt="" width="16px" height="16px">
+                            <span>XRP (Ripple)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="TRX" data-address="TDQXdt1mJKKJziN1MKY3a8hJfz8igqxDzQ" data-qr="IMG_9589.PNG">
+                            <img src="{% static 'images/tron-removebg-preview.png' %}" alt="" width="16px" height="16px">
+                            <span>TRX (Tron)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="BNB" data-address="bnb1055a0lp8y0qxn7rnqfmxfxk7wm2qdwngh83r05" data-qr="IMG_9591.PNG">
+                            <img src="{% static 'images/bnb-removebg-preview.png' %}" alt="" width="16px" height="16px">
+                            <span>BNB (Binance Coin)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="USDC" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9593.PNG">
+                            <img src="{% static 'images/usdc-removebg-preview.png' %}" alt="" width="16px" height="16px">
+                            <span>USDC (USD coin)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="APE" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9595.PNG">
+                            <img src="{% static 'images/ape.png' %}" alt="" width="16px" height="16px">
+                            <span>APE (Apecoin)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="BUSD" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9597.PNG">
+                            <img src="{% static 'images/BUSD-removebg-preview.png' %}" alt="" width="16px" height="16px">
+                            <span>BUSD (Binance USD)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="CRO" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9599.PNG">
+                            <img src="{% static 'images/CRO.png' %}" alt="" width="16px" height="16px">
+                            <span>CRO (Cronos)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="DAI" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9601.PNG">
+                            <img src="{% static 'images/dai.png' %}" alt="" width="16px" height="16px">
+                            <span>DAI (DAI)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="LINK" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9603.PNG">
+                            <img src="{% static 'images/chainlink.png' %}" alt="" width="16px" height="16px">
+                            <span>LINK (Chainlink)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="SAND" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9605.PNG">
+                            <img src="{% static 'images/SAND.png' %}" alt="" width="16px" height="16px">
+                            <span>SAND (Sandbox)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="SHIB" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9607.PNG">
+                            <img src="{% static 'images/shib-removebg-preview.png' %}" alt="" width="16px" height="16px">
+                            <span>SHIB (Shiba Inu)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="UNI" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9609.PNG">
+                            <img src="{% static 'images/Uniswap-removebg-preview.png' %}" alt="" width="16px" height="16px">
+                            <span>UNI (Uniswap)</span>
+                        </li>
+                        <li class="wallet__choice" data-crypto="MATIC" data-address="0x841a7725868A0B130c869e6Bb321b4a4d788224c" data-qr="IMG_9611.PNG">
+                            <img src="{% static 'images/polygon.png' %}" alt="" width="16px" height="16px">
+                            <span>MATIC (Polygon)</span>
+                        </li>
+                    </ul>
+                </div>
+                
+            </div>
+            <div class="wallet__data">
+                <div class="wallet__info">Your <span id="wallet__info">BTC</span> deposit address <span id="wallet__info-network"></span></div>
+                <div class="wallet__input" id="wallet__input">
+                    <input class="wallet__address" id="wallet__address" value="bc1qkv5kjxxmt2zkz4umqhdgyxkz82grh8k75uufqs">
+                    <div class="wallet__copy" id="wallet__copy">
+                        <img src="{% static 'images/free-icon-copy-4420968.png' %}" alt="" width="16px" height="16px">
+                    </div>
+                </div>
+                <div class="wallet__qr">
+                    <img src="{% static 'images/IMG_9575.PNG' %}" id="wallet__qr" alt="" width="250px" height="250px">
+                </div>
+                <div class="wallet__safe" id="wallet__safe1">Only send <span id="wallet__safe2">BTC</span> to this address, 1 confirmation required.</div>
+            </div>
+        </div>
+        <div class="wallet__buy wallet__tab_b" id="wallet__buy" style="display: none;">
+            <div class="wallet__buttons-buy">
+                <button class="wallet__usd-btn"><a target="_blank" href="https://stake.banxa.com/">Remik</a></button>
+                <button class="wallet__usd-btn"><a target="_blank" href="https://www.moonpay.com/buy">MoonPay</a></button>
+            </div>
+            <p class="wallet__safe" style="text-align: left; margin-top: 1rem; line-height: 1.5;">Disclaimer: The above third party services can be used to purchase crypto that can be used to play on Stake. By registering on their platform, you are also accepting to their terms of service and will be required to pass their KYC process, which runs independently to ours.</p>
+        </div>
+        <div class="wallet__footer">
+            <div class="wallet__safe" id="wallet__safe3">Improve your account security with Two-Factor Authentication</div>
+            <button class="wallet__enable">Enable 2FA</button>
+        </div>
+    </div>
+    <header class="header">
+        <div class="wrapper">
+            <div class="header__wrapper">
+                <div class="header__logo">
+                    <img src="{% static 'images/stake_logo-removebg-preview.png' %}" alt="" id="stake-logo">
+                    <img src="{% static 'images/s.png' %}" alt="" id="s">
+                </div>
+                <div class="header__balance">
+                    <div class="header__money">
+                        <span>0.00000000</span>
+                        <div class="header__btc">
+                            <img src="{% static 'images/bitcoin.png' %}" alt="" width="16px" height="16px">
+                        </div>
+                        <div class="header__arrow"></div>
+                    </div>
+                    <div class="header__wallet">
+                        <span>Wallet</span>
+                        <img src="{% static 'images/wallet.png' %}" alt="" height="16px" width="16px" id="wallet">
+                    </div>
+                </div>
+                <div class="header__menu header__menu_two">
+                    <div class="header__menu-block">
+                        <div class="header__ic">
+                            <img src="{% static 'images/loupe.png' %}" alt="" width="16px" height="16px" id="search">
+                            <span>Search</span>
+                        </div>
+                    </div>
+                    <div class="header__menu-block">
+                        <div class="header__ic">
+                            <img src="{% static 'images/user.png' %}" alt="" width="16px" height="16px" id="user">
+                        </div>
+                    </div>
+                    <div class="header__menu-block">
+                        <div class="header__ic">
+                            <img src="{% static 'images/chat.png' %}" alt="" width="16px" height="16px" id="chat">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="wrapper">
+            <div class="main__wrapper">
+                <div class="main__hero">
+                    <div class="main__interaction">
+                        <div class="main__welcome">
+                            <h1>Welcome back!</h1>
+                            <div class="main__progress">
+                                <div>Your VIP Progress</div>
+                                <div>0.00%</div>
+                            </div>
+                            <div class="main__bar"></div>
+                            <div class="main__stars">
+                                <div class="main__star">
+                                    <img src="{% static 'images/star.png' %}" alt="" width="16px" height="16px">
+                                    <span>None</span>
+                                </div>
+                                <div class="main__star">
+                                    <img src="{% static 'images/stargold.png' %}" alt="" width="16px" height="16px">
+                                    <span>Bronze</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main__image">
+                        <img src="{% static 'images/welcome-top-en.avif' %}" alt="" loading="lazy" draggable="false" >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <section class="gambling">
+        <div class="wrapper">
+            <div class="gambling__wrapper">
+                <div class="gambling__block">
+                    <div class="gambling__header">
+                        <div class="gambling__icon">
+                            <img src="{% static 'images/poker-cards.png' %}" alt="" width="16px" height="16px">
+                            <span>Casino</span>
+                        </div>
+                    </div>
+                    <div class="gambling__img">
+                        <img src="{% static 'images/welcome-casino-en.avif' %}" alt="">
+                    </div>
+                    <div class="gambling__title">Leading Online Crypto Casino</div>
+                    <div class="gambling__desc">Browse our giant range of casino games as Stake offers a fair and fun online gambling experience. Play Slots, Live Casino, Blackjack, Baccarat, Roulette, and thousands of classic casino games right from your browser, including your favourite Stake Originals.</div>
+                    <button class="gambling__btn">Go to Casino</button>
+                </div>
+                <div class="gambling__block">
+                    <div class="gambling__header">
+                        <div class="gambling__icon">
+                            <img src="{% static 'images/basketball-ball.png' %}" alt="" width="16px" height="16px">
+                            <span>Sports</span>
+                        </div>
+                    </div>
+                    <div class="gambling__img">
+                        <img src="{% static 'images/welcome-sports-en.avif' %}" alt="">
+                    </div>
+                    <div class="gambling__title">Best Crypto Sports Betting Online</div>
+                    <div class="gambling__desc">Bet on your favourite teams, players and leagues from all around the world on our sports betting platform. Gamble on a wide range of sports betting options and markets for live sports across MMA, Basketball, Soccer and more for an unbeatable sports betting exp.</div>
+                    <button class="gambling__btn">Go to Sportsbook</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="drake">
+        <div class="wrapper">
+            <div class="drake__wrapper">
+                <button class="drake__btn">Learn More</button>
+                <div class="drake__collab">
+                    <img src="{% static 'images/stakexdrake.png' %}" alt="">
+                </div>
+                <div class="drake__image">
+                    <img src="{% static 'images/drake-banner.avif' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+
+        let wallet = document.querySelector('#wallet__crypto')
+        let wallet_address = document.querySelector('#wallet__address')
+
+        wallet.addEventListener('click', function () {
+            document.querySelector('#wallet__arrow').classList.toggle('wallet__arrow__active')
+            document.querySelector('#wallet__dropdown').classList.toggle('wallet__dropdown__active')
+        })
+
+        let cryptos = document.querySelectorAll('[data-crypto]')
+        let cryptos_logo = document.querySelectorAll('[data-crypto] > img')
+        let cryptos_address = document.querySelectorAll('[data-address]')
+        let cryptos_qr = document.querySelectorAll('[data-qr]')
+
+        for (let i = 0; i < cryptos.length; i++) {
+            cryptos[i].addEventListener('click', function () {
+
+                wallet.innerHTML = 
+                `<img src="${cryptos_logo[i].src}" alt="" width="15px" height="15px">
+                <span>${cryptos[i].getAttribute('data-crypto')}</span>
+                <div class="wallet__arrow wallet__arrow__active" id="wallet__arrow"></div>`
+                
+                document.querySelector('#wallet__info').innerHTML = `${cryptos[i].getAttribute('data-crypto')}`
+                // wallet__info-network
+                if (cryptos[i].getAttribute('data-crypto') == 'USDT') {
+                    document.querySelector('#wallet__info-network').innerHTML = "(ERC-20)"
+                }
+                else if (cryptos[i].getAttribute('data-crypto') == 'USDC') {
+                    document.querySelector('#wallet__info-network').innerHTML = "(ERC-20)"
+                }
+                else if (cryptos[i].getAttribute('data-crypto') == 'MATIC') {
+                    document.querySelector('#wallet__info-network').innerHTML = "(MATIC)"
+                }
+                else if (cryptos[i].getAttribute('data-crypto') == 'DAI') {
+                    document.querySelector('#wallet__info-network').innerHTML = "(ERC-20)"
+                }
+                else {
+                    document.querySelector('#wallet__info-network').innerHTML = ""
+                }
+                document.querySelector('#wallet__safe2').innerHTML = `${cryptos[i].getAttribute('data-crypto')}`
+                wallet_address.value = `${cryptos[i].getAttribute('data-address')}`
+                document.querySelector('#wallet__qr').src = `/static/images/${cryptos[i].getAttribute('data-qr')}`
+            })
+        }
+
+        window.onclick = function (event) {
+            if (event.target != wallet && event.target != document.querySelector('#wallet__arrow') && event.target != document.querySelector('#wallet__crypto > img') && event.target != document.querySelector('#wallet__crypto > span') && document.querySelector('#wallet__dropdown').classList.contains('wallet__dropdown__active')) {
+                document.querySelector('#wallet__arrow').classList.toggle('wallet__arrow__active')
+                document.querySelector('#wallet__dropdown').classList.toggle('wallet__dropdown__active')
+            }
+        } 
+
+        let copy_btn = document.querySelector('#wallet__copy')
+        
+        copy_btn.onclick = function () {
+            document.execCommand("copy");
+        }
+
+        copy_btn.addEventListener('copy', function (event) {
+            event.preventDefault()
+            if (event.clipboardData) {
+                event.clipboardData.setData("text/plain", wallet_address.value);
+            }
+        })
+
+        wallet_address.addEventListener('click', () => {
+            if (document.selection) { 
+                const range = document.body.createTextRange();
+                range.moveToElementText(wallet_address);
+                range.select();
+            } else if (window.getSelection) {
+                const range = document.createRange();
+                range.selectNode(wallet_address);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+            }
+        })
+
+        function openTab(evt, tabSection) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("wallet__tab_b");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("wallet__tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" wallet__tab_a", "");
+            }
+
+            if (document.getElementById(tabSection) != document.getElementById('wallet__buy')) {
+                document.getElementById(tabSection).style.display = "flex";
+                evt.currentTarget.className += " wallet__tab_a";
+            } else {
+                document.getElementById(tabSection).style.display = "block";
+                evt.currentTarget.className += " wallet__tab_a";
+            }
+        }
+
+    </script>
+</body>
+</html>
